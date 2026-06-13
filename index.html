@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Website Login</title>
+<title>Login + Data Bank</title>
 
 <style>
 body{
     font-family:Arial;
-    background:linear-gradient(135deg,#6a11cb,#2575fc);
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
     display:flex;
     justify-content:center;
     align-items:center;
@@ -26,13 +26,13 @@ body{
 
 h2{
     text-align:center;
-    color:#2575fc;
+    color:#0077ff;
 }
 
 input{
     width:100%;
     padding:10px;
-    margin:8px 0;
+    margin:6px 0;
     border:1px solid #ccc;
     border-radius:8px;
 }
@@ -42,27 +42,32 @@ button{
     padding:10px;
     border:none;
     border-radius:8px;
-    background:#2575fc;
+    background:#0077ff;
     color:white;
     cursor:pointer;
     margin-top:5px;
 }
 
 button:hover{
-    background:#1b5fd9;
+    background:#005fd1;
 }
 
 .link{
     text-align:center;
     margin-top:10px;
-    color:#2575fc;
+    color:#0077ff;
     cursor:pointer;
 }
 
 .hidden{display:none;}
 
-#dash{
-    text-align:center;
+.card{
+    text-align:left;
+    font-size:14px;
+    background:#f5f5f5;
+    padding:10px;
+    border-radius:8px;
+    margin-top:10px;
 }
 </style>
 </head>
@@ -86,13 +91,24 @@ button:hover{
     <input id="lUser" placeholder="Username">
     <input id="lPass" placeholder="Password">
     <button onclick="login()">Masuk</button>
-    <div class="link" onclick="showRegister()">Belum punya akun? Register</div>
+    <div class="link" onclick="showRegister()">Register</div>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dash" class="hidden">
-    <h2>Berhasil Login 🎉</h2>
+    <h2>Dashboard</h2>
     <p id="welcome"></p>
+
+    <h3>Data Bank</h3>
+
+    <input id="bank" placeholder="Nama Bank (BCA, BRI, dll)">
+    <input id="rek" placeholder="Nomor Rekening">
+    <input id="nama" placeholder="Nama Pemilik">
+
+    <button onclick="saveBank()">Simpan Data Bank</button>
+
+    <div class="card" id="bankData"></div>
+
     <button onclick="logout()">Logout</button>
 </div>
 
@@ -140,8 +156,43 @@ function login(){
         document.getElementById("login").classList.add("hidden");
         document.getElementById("dash").classList.remove("hidden");
         document.getElementById("welcome").innerText = "Halo, " + u;
+
+        loadBank();
     } else {
-        alert("Username atau password salah!");
+        alert("Login gagal!");
+    }
+}
+
+// SIMPAN DATA BANK
+function saveBank(){
+    let bank = document.getElementById("bank").value;
+    let rek = document.getElementById("rek").value;
+    let nama = document.getElementById("nama").value;
+
+    if(bank=="" || rek=="" || nama==""){
+        alert("Isi data bank lengkap!");
+        return;
+    }
+
+    localStorage.setItem("bank", bank);
+    localStorage.setItem("rek", rek);
+    localStorage.setItem("namaRek", nama);
+
+    loadBank();
+    alert("Data bank tersimpan!");
+}
+
+// TAMPILKAN DATA BANK
+function loadBank(){
+    let bank = localStorage.getItem("bank");
+    let rek = localStorage.getItem("rek");
+    let nama = localStorage.getItem("namaRek");
+
+    if(bank && rek && nama){
+        document.getElementById("bankData").innerHTML =
+        "Bank: " + bank + "<br>" +
+        "Rekening: " + rek + "<br>" +
+        "Nama: " + nama;
     }
 }
 
