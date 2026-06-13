@@ -1,10 +1,144 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Website Saya</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daftar Akun</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#ff4d6d,#ff758f);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.container{
+    width:100%;
+    max-width:400px;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+    color:#ff4d6d;
+}
+
+.input-group{
+    margin-bottom:15px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+.input-group input,
+.input-group select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+.btn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#ff4d6d;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#e63956;
+}
+
+.login{
+    text-align:center;
+    margin-top:15px;
+}
+
+.login a{
+    color:#ff4d6d;
+    text-decoration:none;
+}
+</style>
 </head>
 <body>
-    <h1>Halo Dunia!</h1>
-    <p>Website pertama saya di GitHub Pages.</p>
+
+<div class="container">
+    <h2>Daftar Akun</h2>
+
+    <form id="registerForm">
+        <div class="input-group">
+            <label>Nama Lengkap</label>
+            <input type="text" id="nama" required>
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="email" required>
+        </div>
+
+        <div class="input-group">
+            <label>Jenis Kelamin</label>
+            <select id="gender" required>
+                <option value="">Pilih</option>
+                <option>Laki-laki</option>
+                <option>Perempuan</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" required>
+        </div>
+
+        <div class="input-group">
+            <label>Konfirmasi Password</label>
+            <input type="password" id="confirmPassword" required>
+        </div>
+
+        <button type="submit" class="btn">Daftar Sekarang</button>
+    </form>
+
+    <div class="login">
+        Sudah punya akun? <a href="#">Masuk</a>
+    </div>
+</div>
+
+<script>
+document.getElementById("registerForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    let password = document.getElementById("password").value;
+    let confirmPassword = document.getElementById("confirmPassword").value;
+
+    if(password !== confirmPassword){
+        alert("Password tidak cocok!");
+        return;
+    }
+
+    alert("Registrasi berhasil!");
+});
+</script>
+
 </body>
 </html>
