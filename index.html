@@ -8,7 +8,7 @@
 <style>
 body{
     font-family:Arial;
-    background:linear-gradient(135deg,#6a11cb,#2575fc);
+    background:linear-gradient(135deg,#667eea,#764ba2);
     display:flex;
     justify-content:center;
     align-items:center;
@@ -23,9 +23,9 @@ body{
     border-radius:12px;
 }
 
-h2{text-align:center;color:#2575fc;}
+h2{text-align:center;color:#764ba2;}
 
-input{
+input, select{
     width:100%;
     padding:10px;
     margin:6px 0;
@@ -36,7 +36,7 @@ input{
 button{
     width:100%;
     padding:10px;
-    background:#2575fc;
+    background:#764ba2;
     color:white;
     border:none;
     border-radius:8px;
@@ -82,10 +82,20 @@ button{
 
     <p id="welcome"></p>
 
-    <h3>Data Akun</h3>
     <input id="email" placeholder="Gmail / Email">
-    <input id="bank" placeholder="Nama Bank">
-    <input id="rek" placeholder="Nomor Rekening">
+
+    <!-- BANK PILIHAN -->
+    <select id="bank">
+        <option value="">-- Pilih Bank --</option>
+        <option>BRI</option>
+        <option>Mandiri</option>
+        <option>BCA</option>
+        <option>BNI</option>
+        <option>GoPay</option>
+        <option>DANA</option>
+    </select>
+
+    <input id="rek" placeholder="Nomor Rekening / Nomor HP">
     <input id="nama" placeholder="Nama Pemilik">
 
     <button onclick="saveData()">Simpan Data</button>
@@ -129,12 +139,13 @@ function login(){
         document.getElementById("login").classList.add("hidden");
         document.getElementById("dash").classList.remove("hidden");
         document.getElementById("welcome").innerText = "Halo, " + u;
+        loadData();
     } else {
         alert("Login gagal!");
     }
 }
 
-// SIMPAN DATA (EMAIL + BANK)
+// SIMPAN DATA
 function saveData(){
     let email = document.getElementById("email").value;
     let bank = document.getElementById("bank").value;
@@ -161,11 +172,13 @@ function loadData(){
     let rek = localStorage.getItem("rek");
     let nama = localStorage.getItem("nama");
 
-    document.getElementById("hasil").innerHTML =
+    if(email){
+        document.getElementById("hasil").innerHTML =
         "Email: " + email + "<br>" +
         "Bank: " + bank + "<br>" +
         "Rekening: " + rek + "<br>" +
         "Nama: " + nama;
+    }
 }
 
 // LOGOUT
