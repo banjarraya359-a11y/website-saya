@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daftar Akun</title>
+<title>Register Modern</title>
 
 <style>
 *{
@@ -21,45 +21,59 @@ body{
     min-height:100vh;
 }
 
+/* CARD */
 .container{
     width:100%;
-    max-width:400px;
-    background:white;
+    max-width:420px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
     padding:30px;
-    border-radius:15px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    border-radius:18px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.25);
+    border:1px solid rgba(255,255,255,0.3);
 }
 
+/* TITLE */
 h2{
     text-align:center;
     margin-bottom:20px;
-    color:#ff4d6d;
+    color:white;
 }
 
+/* INPUT */
 .input-group{
     margin-bottom:15px;
 }
 
-.input-group label{
+label{
     display:block;
     margin-bottom:5px;
     font-weight:bold;
+    color:white;
+    font-size:14px;
 }
 
-.input-group input,
-.input-group select{
+input, select{
     width:100%;
     padding:12px;
-    border:1px solid #ccc;
-    border-radius:8px;
+    border-radius:10px;
+    border:none;
+    outline:none;
+    background:rgba(255,255,255,0.85);
+    transition:0.2s;
 }
 
+input:focus, select:focus{
+    transform:scale(1.02);
+}
+
+/* BUTTON */
 .btn{
     width:100%;
     padding:12px;
     border:none;
-    border-radius:8px;
-    background:#ff4d6d;
+    border-radius:10px;
+    background:#222;
     color:white;
     font-size:16px;
     cursor:pointer;
@@ -67,26 +81,46 @@ h2{
 }
 
 .btn:hover{
-    background:#e63956;
+    background:#000;
+    transform:translateY(-2px);
 }
 
+/* LOGIN TEXT */
 .login{
     text-align:center;
     margin-top:15px;
+    color:white;
 }
 
 .login a{
-    color:#ff4d6d;
-    text-decoration:none;
+    color:#fff;
+    font-weight:bold;
+    text-decoration:underline;
+}
+
+/* NOTIF */
+#notif{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#22c55e;
+    color:white;
+    padding:12px 18px;
+    border-radius:8px;
+    display:none;
+    box-shadow:0 10px 20px rgba(0,0,0,0.2);
 }
 </style>
 </head>
 <body>
 
+<div id="notif">Registrasi berhasil ✅</div>
+
 <div class="container">
     <h2>Daftar Akun</h2>
 
     <form id="registerForm">
+
         <div class="input-group">
             <label>Nama Lengkap</label>
             <input type="text" id="nama" required>
@@ -136,7 +170,15 @@ document.getElementById("registerForm").addEventListener("submit", function(e){
         return;
     }
 
-    alert("Registrasi berhasil!");
+    // notif custom
+    let notif = document.getElementById("notif");
+    notif.style.display = "block";
+
+    setTimeout(() => {
+        notif.style.display = "none";
+    }, 3000);
+
+    this.reset();
 });
 </script>
 
