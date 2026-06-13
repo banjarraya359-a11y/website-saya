@@ -3,49 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login Register</title>
+<title>Login Fix Final</title>
 
 <style>
 body{
     font-family:Arial;
-    background:linear-gradient(135deg,#ff4d6d,#ff758f);
+    background:#ff758f;
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
 }
 
-.container{
-    width:100%;
-    max-width:400px;
+.box{
+    width:320px;
     background:white;
-    padding:25px;
-    border-radius:12px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    padding:20px;
+    border-radius:10px;
 }
-
-h2{text-align:center;color:#ff4d6d;}
 
 input{
     width:100%;
     padding:10px;
     margin:8px 0;
-    border:1px solid #ccc;
-    border-radius:8px;
 }
 
 button{
     width:100%;
     padding:10px;
-    margin-top:10px;
-    border:none;
-    border-radius:8px;
     background:#ff4d6d;
+    border:none;
     color:white;
     cursor:pointer;
 }
 
-button:hover{background:#e63956;}
+.hidden{display:none;}
 
 .link{
     text-align:center;
@@ -53,95 +45,94 @@ button:hover{background:#e63956;}
     cursor:pointer;
     color:#ff4d6d;
 }
-
-.form{display:none;}
-.form.active{display:block;}
-
-#dashboard{
-    display:none;
-    text-align:center;
-}
 </style>
 </head>
 <body>
 
-<div class="container">
-
-<!-- LOGIN -->
-<div id="login" class="form active">
-    <h2>Login</h2>
-    <input type="text" id="loginUser" placeholder="Username">
-    <input type="password" id="loginPass" placeholder="Password">
-    <button onclick="login()">Masuk</button>
-    <div class="link" onclick="show('register')">Belum punya akun? Register</div>
-</div>
+<div class="box">
 
 <!-- REGISTER -->
-<div id="register" class="form">
-    <h2>Register</h2>
-    <input type="text" id="regUser" placeholder="Username">
-    <input type="password" id="regPass" placeholder="Password">
-    <button onclick="register()">Daftar</button>
-    <div class="link" onclick="show('login')">Sudah punya akun? Login</div>
+<div id="reg">
+    <h3>Register</h3>
+    <input id="ru" placeholder="username">
+    <input id="rp" placeholder="password">
+    <button onclick="reg()">Daftar</button>
+    <div class="link" onclick="toLogin()">ke login</div>
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard">
-    <h2>Selamat Datang 🎉</h2>
-    <p id="welcome"></p>
+<!-- LOGIN -->
+<div id="log" class="hidden">
+    <h3>Login</h3>
+    <input id="lu" placeholder="username">
+    <input id="lp" placeholder="password">
+    <button onclick="log()">Masuk</button>
+    <div class="link" onclick="toReg()">ke register</div>
+</div>
+
+<!-- DASH -->
+<div id="dash" class="hidden">
+    <h3>Berhasil Login</h3>
+    <p id="out"></p>
     <button onclick="logout()">Logout</button>
 </div>
 
 </div>
 
 <script>
-// pindah halaman form
-function show(form){
-    document.getElementById('login').classList.remove('active');
-    document.getElementById('register').classList.remove('active');
 
-    document.getElementById(form).classList.add('active');
+// pindah
+function toLogin(){
+    document.getElementById("reg").classList.add("hidden");
+    document.getElementById("log").classList.remove("hidden");
 }
 
-// REGISTER (simpan ke localStorage)
-function register(){
-    let user = document.getElementById("regUser").value;
-    let pass = document.getElementById("regPass").value;
+function toReg(){
+    document.getElementById("log").classList.add("hidden");
+    document.getElementById("reg").classList.remove("hidden");
+}
 
-    if(user=="" || pass==""){
-        alert("Isi semua data!");
+// register
+function reg(){
+    let u = document.getElementById("ru").value;
+    let p = document.getElementById("rp").value;
+
+    if(!u || !p){
+        alert("isi dulu");
         return;
     }
 
-    localStorage.setItem("user", user);
-    localStorage.setItem("pass", pass);
+    localStorage.setItem("u", u);
+    localStorage.setItem("p", p);
 
-    alert("Register berhasil! Silakan login");
-    show('login');
+    alert("register sukses");
+    toLogin();
 }
 
-// LOGIN
-function login(){
-    let user = document.getElementById("loginUser").value;
-    let pass = document.getElementById("loginPass").value;
+// login
+function log(){
+    let u = document.getElementById("lu").value;
+    let p = document.getElementById("lp").value;
 
-    let savedUser = localStorage.getItem("user");
-    let savedPass = localStorage.getItem("pass");
+    let su = localStorage.getItem("u");
+    let sp = localStorage.getItem("p");
 
-    if(user == savedUser && pass == savedPass){
-        document.getElementById("login").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        document.getElementById("welcome").innerText = "Halo, " + user;
+    console.log("DEBUG:", su, sp); // 🔥 penting
+
+    if(u === su && p === sp){
+        document.getElementById("log").classList.add("hidden");
+        document.getElementById("dash").classList.remove("hidden");
+        document.getElementById("out").innerText = "Halo " + u;
     } else {
-        alert("Username atau password salah!");
+        alert("Login gagal");
     }
 }
 
-// LOGOUT
+// logout
 function logout(){
-    document.getElementById("dashboard").style.display = "none";
-    document.getElementById("login").style.display = "block";
+    document.getElementById("dash").classList.add("hidden");
+    document.getElementById("log").classList.remove("hidden");
 }
+
 </script>
 
 </body>
