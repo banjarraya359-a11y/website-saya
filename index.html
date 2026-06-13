@@ -3,76 +3,96 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login Fix Final</title>
+<title>Website Login</title>
 
 <style>
 body{
     font-family:Arial;
-    background:#ff758f;
+    background:linear-gradient(135deg,#6a11cb,#2575fc);
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
+    margin:0;
 }
 
 .box{
-    width:320px;
+    width:340px;
     background:white;
     padding:20px;
-    border-radius:10px;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h2{
+    text-align:center;
+    color:#2575fc;
 }
 
 input{
     width:100%;
     padding:10px;
     margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
 }
 
 button{
     width:100%;
     padding:10px;
-    background:#ff4d6d;
     border:none;
+    border-radius:8px;
+    background:#2575fc;
     color:white;
+    cursor:pointer;
+    margin-top:5px;
+}
+
+button:hover{
+    background:#1b5fd9;
+}
+
+.link{
+    text-align:center;
+    margin-top:10px;
+    color:#2575fc;
     cursor:pointer;
 }
 
 .hidden{display:none;}
 
-.link{
+#dash{
     text-align:center;
-    margin-top:10px;
-    cursor:pointer;
-    color:#ff4d6d;
 }
 </style>
 </head>
+
 <body>
 
 <div class="box">
 
 <!-- REGISTER -->
-<div id="reg">
-    <h3>Register</h3>
-    <input id="ru" placeholder="username">
-    <input id="rp" placeholder="password">
-    <button onclick="reg()">Daftar</button>
-    <div class="link" onclick="toLogin()">ke login</div>
+<div id="register">
+    <h2>Register</h2>
+    <input id="rUser" placeholder="Username">
+    <input id="rPass" placeholder="Password">
+    <button onclick="register()">Daftar</button>
+    <div class="link" onclick="showLogin()">Sudah punya akun? Login</div>
 </div>
 
 <!-- LOGIN -->
-<div id="log" class="hidden">
-    <h3>Login</h3>
-    <input id="lu" placeholder="username">
-    <input id="lp" placeholder="password">
-    <button onclick="log()">Masuk</button>
-    <div class="link" onclick="toReg()">ke register</div>
+<div id="login" class="hidden">
+    <h2>Login</h2>
+    <input id="lUser" placeholder="Username">
+    <input id="lPass" placeholder="Password">
+    <button onclick="login()">Masuk</button>
+    <div class="link" onclick="showRegister()">Belum punya akun? Register</div>
 </div>
 
-<!-- DASH -->
+<!-- DASHBOARD -->
 <div id="dash" class="hidden">
-    <h3>Berhasil Login</h3>
-    <p id="out"></p>
+    <h2>Berhasil Login 🎉</h2>
+    <p id="welcome"></p>
     <button onclick="logout()">Logout</button>
 </div>
 
@@ -80,57 +100,55 @@ button{
 
 <script>
 
-// pindah
-function toLogin(){
-    document.getElementById("reg").classList.add("hidden");
-    document.getElementById("log").classList.remove("hidden");
+// pindah halaman
+function showLogin(){
+    document.getElementById("register").classList.add("hidden");
+    document.getElementById("login").classList.remove("hidden");
 }
 
-function toReg(){
-    document.getElementById("log").classList.add("hidden");
-    document.getElementById("reg").classList.remove("hidden");
+function showRegister(){
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("register").classList.remove("hidden");
 }
 
-// register
-function reg(){
-    let u = document.getElementById("ru").value;
-    let p = document.getElementById("rp").value;
+// REGISTER
+function register(){
+    let u = document.getElementById("rUser").value;
+    let p = document.getElementById("rPass").value;
 
-    if(!u || !p){
-        alert("isi dulu");
+    if(u=="" || p==""){
+        alert("Isi semua data!");
         return;
     }
 
-    localStorage.setItem("u", u);
-    localStorage.setItem("p", p);
+    localStorage.setItem("user", u);
+    localStorage.setItem("pass", p);
 
-    alert("register sukses");
-    toLogin();
+    alert("Register berhasil!");
+    showLogin();
 }
 
-// login
-function log(){
-    let u = document.getElementById("lu").value;
-    let p = document.getElementById("lp").value;
+// LOGIN
+function login(){
+    let u = document.getElementById("lUser").value;
+    let p = document.getElementById("lPass").value;
 
-    let su = localStorage.getItem("u");
-    let sp = localStorage.getItem("p");
-
-    console.log("DEBUG:", su, sp); // 🔥 penting
+    let su = localStorage.getItem("user");
+    let sp = localStorage.getItem("pass");
 
     if(u === su && p === sp){
-        document.getElementById("log").classList.add("hidden");
+        document.getElementById("login").classList.add("hidden");
         document.getElementById("dash").classList.remove("hidden");
-        document.getElementById("out").innerText = "Halo " + u;
+        document.getElementById("welcome").innerText = "Halo, " + u;
     } else {
-        alert("Login gagal");
+        alert("Username atau password salah!");
     }
 }
 
-// logout
+// LOGOUT
 function logout(){
     document.getElementById("dash").classList.add("hidden");
-    document.getElementById("log").classList.remove("hidden");
+    document.getElementById("login").classList.remove("hidden");
 }
 
 </script>
