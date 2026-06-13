@@ -3,183 +3,145 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register Modern</title>
+<title>Login Register</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
-}
-
 body{
+    font-family:Arial;
     background:linear-gradient(135deg,#ff4d6d,#ff758f);
     display:flex;
     justify-content:center;
     align-items:center;
-    min-height:100vh;
+    height:100vh;
 }
 
-/* CARD */
 .container{
     width:100%;
-    max-width:420px;
-    background:rgba(255,255,255,0.15);
-    backdrop-filter: blur(12px);
-    padding:30px;
-    border-radius:18px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.25);
-    border:1px solid rgba(255,255,255,0.3);
+    max-width:400px;
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
 }
 
-/* TITLE */
-h2{
-    text-align:center;
-    margin-bottom:20px;
-    color:white;
-}
+h2{text-align:center;color:#ff4d6d;}
 
-/* INPUT */
-.input-group{
-    margin-bottom:15px;
-}
-
-label{
-    display:block;
-    margin-bottom:5px;
-    font-weight:bold;
-    color:white;
-    font-size:14px;
-}
-
-input, select{
+input{
     width:100%;
-    padding:12px;
-    border-radius:10px;
-    border:none;
-    outline:none;
-    background:rgba(255,255,255,0.85);
-    transition:0.2s;
-}
-
-input:focus, select:focus{
-    transform:scale(1.02);
-}
-
-/* BUTTON */
-.btn{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:#222;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-.btn:hover{
-    background:#000;
-    transform:translateY(-2px);
-}
-
-/* LOGIN TEXT */
-.login{
-    text-align:center;
-    margin-top:15px;
-    color:white;
-}
-
-.login a{
-    color:#fff;
-    font-weight:bold;
-    text-decoration:underline;
-}
-
-/* NOTIF */
-#notif{
-    position:fixed;
-    top:20px;
-    right:20px;
-    background:#22c55e;
-    color:white;
-    padding:12px 18px;
+    padding:10px;
+    margin:8px 0;
+    border:1px solid #ccc;
     border-radius:8px;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
+    background:#ff4d6d;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover{background:#e63956;}
+
+.link{
+    text-align:center;
+    margin-top:10px;
+    cursor:pointer;
+    color:#ff4d6d;
+}
+
+.form{display:none;}
+.form.active{display:block;}
+
+#dashboard{
     display:none;
-    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+    text-align:center;
 }
 </style>
 </head>
 <body>
 
-<div id="notif">Registrasi berhasil ✅</div>
-
 <div class="container">
-    <h2>Daftar Akun</h2>
 
-    <form id="registerForm">
+<!-- LOGIN -->
+<div id="login" class="form active">
+    <h2>Login</h2>
+    <input type="text" id="loginUser" placeholder="Username">
+    <input type="password" id="loginPass" placeholder="Password">
+    <button onclick="login()">Masuk</button>
+    <div class="link" onclick="show('register')">Belum punya akun? Register</div>
+</div>
 
-        <div class="input-group">
-            <label>Nama Lengkap</label>
-            <input type="text" id="nama" required>
-        </div>
+<!-- REGISTER -->
+<div id="register" class="form">
+    <h2>Register</h2>
+    <input type="text" id="regUser" placeholder="Username">
+    <input type="password" id="regPass" placeholder="Password">
+    <button onclick="register()">Daftar</button>
+    <div class="link" onclick="show('login')">Sudah punya akun? Login</div>
+</div>
 
-        <div class="input-group">
-            <label>Email</label>
-            <input type="email" id="email" required>
-        </div>
+<!-- DASHBOARD -->
+<div id="dashboard">
+    <h2>Selamat Datang 🎉</h2>
+    <p id="welcome"></p>
+    <button onclick="logout()">Logout</button>
+</div>
 
-        <div class="input-group">
-            <label>Jenis Kelamin</label>
-            <select id="gender" required>
-                <option value="">Pilih</option>
-                <option>Laki-laki</option>
-                <option>Perempuan</option>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label>Password</label>
-            <input type="password" id="password" required>
-        </div>
-
-        <div class="input-group">
-            <label>Konfirmasi Password</label>
-            <input type="password" id="confirmPassword" required>
-        </div>
-
-        <button type="submit" class="btn">Daftar Sekarang</button>
-    </form>
-
-    <div class="login">
-        Sudah punya akun? <a href="#">Masuk</a>
-    </div>
 </div>
 
 <script>
-document.getElementById("registerForm").addEventListener("submit", function(e){
-    e.preventDefault();
+// pindah halaman form
+function show(form){
+    document.getElementById('login').classList.remove('active');
+    document.getElementById('register').classList.remove('active');
 
-    let password = document.getElementById("password").value;
-    let confirmPassword = document.getElementById("confirmPassword").value;
+    document.getElementById(form).classList.add('active');
+}
 
-    if(password !== confirmPassword){
-        alert("Password tidak cocok!");
+// REGISTER (simpan ke localStorage)
+function register(){
+    let user = document.getElementById("regUser").value;
+    let pass = document.getElementById("regPass").value;
+
+    if(user=="" || pass==""){
+        alert("Isi semua data!");
         return;
     }
 
-    // notif custom
-    let notif = document.getElementById("notif");
-    notif.style.display = "block";
+    localStorage.setItem("user", user);
+    localStorage.setItem("pass", pass);
 
-    setTimeout(() => {
-        notif.style.display = "none";
-    }, 3000);
+    alert("Register berhasil! Silakan login");
+    show('login');
+}
 
-    this.reset();
-});
+// LOGIN
+function login(){
+    let user = document.getElementById("loginUser").value;
+    let pass = document.getElementById("loginPass").value;
+
+    let savedUser = localStorage.getItem("user");
+    let savedPass = localStorage.getItem("pass");
+
+    if(user == savedUser && pass == savedPass){
+        document.getElementById("login").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        document.getElementById("welcome").innerText = "Halo, " + user;
+    } else {
+        alert("Username atau password salah!");
+    }
+}
+
+// LOGOUT
+function logout(){
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("login").style.display = "block";
+}
 </script>
 
 </body>
