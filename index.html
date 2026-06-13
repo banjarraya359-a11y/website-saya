@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login + Data Bank</title>
+<title>Sistem Login + Bank</title>
 
 <style>
 body{
     font-family:Arial;
-    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    background:linear-gradient(135deg,#6a11cb,#2575fc);
     display:flex;
     justify-content:center;
     align-items:center;
@@ -21,13 +21,9 @@ body{
     background:white;
     padding:20px;
     border-radius:12px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
-h2{
-    text-align:center;
-    color:#0077ff;
-}
+h2{text-align:center;color:#2575fc;}
 
 input{
     width:100%;
@@ -40,34 +36,22 @@ input{
 button{
     width:100%;
     padding:10px;
+    background:#2575fc;
+    color:white;
     border:none;
     border-radius:8px;
-    background:#0077ff;
-    color:white;
     cursor:pointer;
     margin-top:5px;
-}
-
-button:hover{
-    background:#005fd1;
-}
-
-.link{
-    text-align:center;
-    margin-top:10px;
-    color:#0077ff;
-    cursor:pointer;
 }
 
 .hidden{display:none;}
 
 .card{
-    text-align:left;
-    font-size:14px;
-    background:#f5f5f5;
+    background:#f3f3f3;
     padding:10px;
     border-radius:8px;
     margin-top:10px;
+    font-size:14px;
 }
 </style>
 </head>
@@ -82,7 +66,6 @@ button:hover{
     <input id="rUser" placeholder="Username">
     <input id="rPass" placeholder="Password">
     <button onclick="register()">Daftar</button>
-    <div class="link" onclick="showLogin()">Sudah punya akun? Login</div>
 </div>
 
 <!-- LOGIN -->
@@ -91,23 +74,23 @@ button:hover{
     <input id="lUser" placeholder="Username">
     <input id="lPass" placeholder="Password">
     <button onclick="login()">Masuk</button>
-    <div class="link" onclick="showRegister()">Register</div>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dash" class="hidden">
     <h2>Dashboard</h2>
+
     <p id="welcome"></p>
 
-    <h3>Data Bank</h3>
-
-    <input id="bank" placeholder="Nama Bank (BCA, BRI, dll)">
+    <h3>Data Akun</h3>
+    <input id="email" placeholder="Gmail / Email">
+    <input id="bank" placeholder="Nama Bank">
     <input id="rek" placeholder="Nomor Rekening">
     <input id="nama" placeholder="Nama Pemilik">
 
-    <button onclick="saveBank()">Simpan Data Bank</button>
+    <button onclick="saveData()">Simpan Data</button>
 
-    <div class="card" id="bankData"></div>
+    <div class="card" id="hasil"></div>
 
     <button onclick="logout()">Logout</button>
 </div>
@@ -116,23 +99,12 @@ button:hover{
 
 <script>
 
-// pindah halaman
-function showLogin(){
-    document.getElementById("register").classList.add("hidden");
-    document.getElementById("login").classList.remove("hidden");
-}
-
-function showRegister(){
-    document.getElementById("login").classList.add("hidden");
-    document.getElementById("register").classList.remove("hidden");
-}
-
 // REGISTER
 function register(){
     let u = document.getElementById("rUser").value;
     let p = document.getElementById("rPass").value;
 
-    if(u=="" || p==""){
+    if(!u || !p){
         alert("Isi semua data!");
         return;
     }
@@ -141,7 +113,8 @@ function register(){
     localStorage.setItem("pass", p);
 
     alert("Register berhasil!");
-    showLogin();
+    document.getElementById("register").classList.add("hidden");
+    document.getElementById("login").classList.remove("hidden");
 }
 
 // LOGIN
@@ -156,44 +129,43 @@ function login(){
         document.getElementById("login").classList.add("hidden");
         document.getElementById("dash").classList.remove("hidden");
         document.getElementById("welcome").innerText = "Halo, " + u;
-
-        loadBank();
     } else {
         alert("Login gagal!");
     }
 }
 
-// SIMPAN DATA BANK
-function saveBank(){
+// SIMPAN DATA (EMAIL + BANK)
+function saveData(){
+    let email = document.getElementById("email").value;
     let bank = document.getElementById("bank").value;
     let rek = document.getElementById("rek").value;
     let nama = document.getElementById("nama").value;
 
-    if(bank=="" || rek=="" || nama==""){
-        alert("Isi data bank lengkap!");
+    if(!email || !bank || !rek || !nama){
+        alert("Isi semua data!");
         return;
     }
 
+    localStorage.setItem("email", email);
     localStorage.setItem("bank", bank);
     localStorage.setItem("rek", rek);
-    localStorage.setItem("namaRek", nama);
+    localStorage.setItem("nama", nama);
 
-    loadBank();
-    alert("Data bank tersimpan!");
+    loadData();
 }
 
-// TAMPILKAN DATA BANK
-function loadBank(){
+// TAMPILKAN DATA
+function loadData(){
+    let email = localStorage.getItem("email");
     let bank = localStorage.getItem("bank");
     let rek = localStorage.getItem("rek");
-    let nama = localStorage.getItem("namaRek");
+    let nama = localStorage.getItem("nama");
 
-    if(bank && rek && nama){
-        document.getElementById("bankData").innerHTML =
+    document.getElementById("hasil").innerHTML =
+        "Email: " + email + "<br>" +
         "Bank: " + bank + "<br>" +
         "Rekening: " + rek + "<br>" +
         "Nama: " + nama;
-    }
 }
 
 // LOGOUT
